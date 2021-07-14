@@ -55,6 +55,8 @@ namespace finance_app
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			financeObjects = new List<FinanceObject>();
 		}
 
 		private void ButtonAddObject_Click(object sender, RoutedEventArgs e)
@@ -162,7 +164,7 @@ namespace finance_app
 			}
 
 			finObj.timeAdded = DateTime.Now;
-			finObj.timeOfObject = DateTime.Now;
+			finObj.timeOfObject = txtDate.DisplayDate;
 
 			financeObjects.Add(finObj);
 			
@@ -182,6 +184,10 @@ namespace finance_app
 			if ((bool)clearGainLoss.IsChecked)
 			{
 				txtGainLoss.Clear();
+			}
+			if ((bool)clearDate.IsChecked)
+			{
+				txtDate.SelectedDate = DateTime.Now;
 			}
 		}
 	}
