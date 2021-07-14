@@ -164,6 +164,8 @@ namespace finance_app
 			finObj.timeAdded = DateTime.Now;
 			finObj.timeOfObject = DateTime.Now;
 
+			financeObjects.Add(finObj);
+			
 			lstNames.Items.Add($"{finObj}");
 			if ((bool)clearName.IsChecked)
 			{
