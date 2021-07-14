@@ -15,18 +15,18 @@ using System.Windows.Shapes;
 
 namespace finance_app
 {
+	public enum Interval
+	{
+		Once,
+		Daily,
+		Weekly,
+		Monthly,
+		Quarterly,
+		Yearly
+	}
 	public struct FinanceObject
 	{
 		public string name;
-		public enum Interval
-		{
-			Once,
-			Daily,
-			Weekly,
-			Monthly,
-			Quarterly,
-			Yearly
-		}
 		public Interval interval;
 		public float amount;
 		public bool gain;
@@ -73,17 +73,6 @@ namespace finance_app
 				txtName.Clear();
 				return;
 			}
-			if (!string.IsNullOrWhiteSpace(txtInterval.Text))
-			{
-				temp[1] = txtInterval.Text;
-			}
-			else
-			{
-				// Failure case. Tell the user what they did wrong and clear amount field.
-				MessageBox.Show("You did not enter a valid interval for the finance object.");
-				txtInterval.Clear();
-				return;
-			}
 			if (!string.IsNullOrWhiteSpace(txtAmount.Text))
 			{ 
 				temp[2] = txtAmount.Text;
@@ -111,29 +100,8 @@ namespace finance_app
 
 			FinanceObject finObj = new FinanceObject();
 			finObj.name = temp[0];
-			switch (temp[1])
-			{
-				case "Once":
-					finObj.interval = FinanceObject.Interval.Once; break;
-				case "Daily":
-					finObj.interval = FinanceObject.Interval.Daily; break;
-				case "Weekly":
-					finObj.interval = FinanceObject.Interval.Weekly; break;
-				case "Monthly":
-					finObj.interval = FinanceObject.Interval.Monthly; break;
-				case "Quarterly":
-					finObj.interval = FinanceObject.Interval.Quarterly; break;
-				case "Yearly":
-					finObj.interval = FinanceObject.Interval.Yearly; break;
-				default:
-					// Failure case. Tell the user what they did wrong and clear amount field.
-					MessageBox.Show("You did not enter a valid interval" +
-							" for the finance object.\nYou should type: " +
-							" \"Once\", \"Daily\", \"Weekly\", \"Monthly\"," +
-							" \"Quarterly\" or \"Yearly.\"");
-					txtInterval.Clear();
-					return;
-			}
+
+			finObj.interval = (Interval)comboBoxInterval.SelectedItem;
 
 			if(float.TryParse(temp[2], out finObj.amount))
 			{
@@ -164,31 +132,15 @@ namespace finance_app
 			}
 
 			finObj.timeAdded = DateTime.Now;
-			finObj.timeOfObject = txtDate.DisplayDate;
+			finObj.timeOfObject = (DateTime)txtDate.SelectedDate;
 
 			financeObjects.Add(finObj);
 			
 			lstNames.Items.Add($"{finObj}");
-			if ((bool)clearName.IsChecked)
-			{
-				txtName.Clear();
-			}
-			if ((bool)clearInterval.IsChecked)
-			{
-				txtInterval.Clear();
-			}
-			if ((bool)clearAmount.IsChecked)
-			{
-				txtAmount.Clear();
-			}
-			if ((bool)clearGainLoss.IsChecked)
-			{
-				txtGainLoss.Clear();
-			}
-			if ((bool)clearDate.IsChecked)
-			{
-				txtDate.SelectedDate = DateTime.Now;
-			}
+			txtName.Clear();
+			txtAmount.Clear();
+			txtGainLoss.Clear();
+			txtDate.SelectedDate = DateTime.Now;
 		}
 	}
 }

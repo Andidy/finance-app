@@ -4,9 +4,22 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:finance_app"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
 		mc:Ignorable="d"
 		Title="Finance App" Height="300" Width="600">
-	<Grid Margin="10">
+    <Window.Resources>
+
+        <ObjectDataProvider x:Key="financeObjectIntervals"
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:Interval"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </Window.Resources>
+
+    <Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
@@ -31,32 +44,27 @@
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="Auto"/>
-				</Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
 				<Label Grid.Column="0" Grid.Row="0">Field</Label>
-				<Label Grid.Column="1" Grid.Row="0">Input</Label>
-				<Label Grid.Column="2" Grid.Row="0">Clear?</Label>
+                <Label Grid.Column="1" Grid.Row="0">Input</Label>
 
-				<Label Grid.Column="0" Grid.Row="1">Name:</Label>
+                <Label Grid.Column="0" Grid.Row="1">Name:</Label>
 				<Label Grid.Column="0" Grid.Row="2">Interval:</Label>
 				<Label Grid.Column="0" Grid.Row="3">Amount:</Label>
 				<Label Grid.Column="0" Grid.Row="4">Gain / Loss:</Label>
 				<Label Grid.Column="0" Grid.Row="5">Date:</Label>
 				<TextBox Grid.Column="1" Grid.Row="1" x:Name="txtName"/>
-				<TextBox Grid.Column="1" Grid.Row="2" x:Name="txtInterval"/>
-				<TextBox Grid.Column="1" Grid.Row="3" x:Name="txtAmount"/>
+                <ComboBox Grid.Column="1" Grid.Row="2" x:Name="comboBoxInterval"
+                          ItemsSource="{Binding Source={StaticResource financeObjectIntervals}}">
+                </ComboBox>
+                <TextBox Grid.Column="1" Grid.Row="3" x:Name="txtAmount"/>
 				<TextBox Grid.Column="1" Grid.Row="4" x:Name="txtGainLoss"/>
-				<DatePicker SelectedDateFormat="Long" SelectedDate="7/13/2021"
+                <DatePicker SelectedDateFormat="Long" SelectedDate="7/13/2021"
                             DisplayDateStart="1/01/2021" DisplayDateEnd="12/31/2021"
                             FirstDayOfWeek="Sunday"
                             Grid.Column="1" Grid.Row="5" x:Name="txtDate"/>
-                <CheckBox Grid.Column="2" Grid.Row="1" x:Name="clearName" IsChecked="True"/>
-                <CheckBox Grid.Column="2" Grid.Row="2" x:Name="clearInterval" IsChecked="True"/>
-                <CheckBox Grid.Column="2" Grid.Row="3" x:Name="clearAmount" IsChecked="True"/>
-                <CheckBox Grid.Column="2" Grid.Row="4" x:Name="clearGainLoss" IsChecked="True"/>
-                <CheckBox Grid.Column="2" Grid.Row="5" x:Name="clearDate" IsChecked="True"/>
             </Grid>
 			<Button x:Name="btnAdd" Margin="0,5,0,0" Click="ButtonAddObject_Click">Add Object</Button>
 		</StackPanel>
