@@ -144,5 +144,17 @@ namespace finance_app
 		{
 			checkGain.IsChecked = true;
 		}
+
+		private void ButtonCalculateBalance_Click(object sender, RoutedEventArgs e)
+		{
+			float value = 0.0f;
+			foreach(FinanceObject fo in financeObjects)
+			{
+				float sign = fo.gain ? 1.0f : -1.0f;
+				value += fo.amount * sign;
+			}
+
+			balanceAmount.Content = "Balance: " + value;
+		}
 	}
 }

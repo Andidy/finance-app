@@ -22,45 +22,45 @@
     <Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
 		<Label>Finance Objects</Label>
+        <Label Grid.Column="1" x:Name="balanceAmount">Test</Label>
 		<ListBox Grid.Row="1" x:Name="lstNames"/>
-		<StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
-			<Label>Enter New Object</Label>
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+            <Label>Enter New Object</Label>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-				<Label Grid.Column="0" Grid.Row="0">Field</Label>
+                <Label Grid.Column="0" Grid.Row="0">Field</Label>
                 <Label Grid.Column="1" Grid.Row="0">Input</Label>
 
                 <Label Grid.Column="0" Grid.Row="1">Name:</Label>
-				<Label Grid.Column="0" Grid.Row="2">Interval:</Label>
-				<Label Grid.Column="0" Grid.Row="3">Amount:</Label>
-				<Label Grid.Column="0" Grid.Row="4">Gain / Loss:</Label>
-				<Label Grid.Column="0" Grid.Row="5">Date:</Label>
-				<TextBox Grid.Column="1" Grid.Row="1" x:Name="txtName"/>
+                <Label Grid.Column="0" Grid.Row="2">Interval:</Label>
+                <Label Grid.Column="0" Grid.Row="3">Amount:</Label>
+                <Label Grid.Column="0" Grid.Row="4">Gain / Loss:</Label>
+                <Label Grid.Column="0" Grid.Row="5">Date:</Label>
+                <TextBox Grid.Column="1" Grid.Row="1" x:Name="txtName"/>
                 <ComboBox Grid.Column="1" Grid.Row="2" x:Name="comboBoxInterval"
                           ItemsSource="{Binding Source={StaticResource financeObjectIntervals}}">
                 </ComboBox>
                 <TextBox Grid.Column="1" Grid.Row="3" x:Name="txtAmount"/>
-				<!--TextBox Grid.Column="1" Grid.Row="4" x:Name="txtGainLoss"/-->
                 <Grid Grid.Column="1" Grid.Row="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -81,7 +81,8 @@
                             FirstDayOfWeek="Sunday"
                             Grid.Column="1" Grid.Row="5" x:Name="txtDate"/>
             </Grid>
-			<Button x:Name="btnAdd" Margin="0,5,0,0" Click="ButtonAddObject_Click">Add Object</Button>
-		</StackPanel>
-	</Grid>
+            <Button x:Name="btnAdd" Margin="0,5,0,0" Click="ButtonAddObject_Click">Add Object</Button>
+            <Button x:Name="btnCalculateBalance" Margin="0,5,0,0" Click="ButtonCalculateBalance_Click">Calculate Balance</Button>
+        </StackPanel>
+    </Grid>
 </Window>
