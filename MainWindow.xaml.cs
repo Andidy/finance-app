@@ -57,6 +57,9 @@ namespace finance_app
 			InitializeComponent();
 
 			financeObjects = new List<FinanceObject>();
+
+			checkGain.IsChecked = true;
+			checkLoss.IsChecked = false;
 		}
 
 		private void ButtonAddObject_Click(object sender, RoutedEventArgs e)
@@ -84,19 +87,6 @@ namespace finance_app
 				txtAmount.Clear();
 				return;
 			}
-			if (!string.IsNullOrWhiteSpace(txtGainLoss.Text))
-			{
-				temp[3] = txtGainLoss.Text;
-			}
-			else
-			{
-				// Failure case. Tell the user what they did wrong and clear amount field.
-				MessageBox.Show("You did not enter a valid gain / loss" +
-						" for the finance object.\nYou should type: " +
-						" \"Gain\", \"Loss\", \"gain\" or \"loss.\"");
-				txtGainLoss.Clear();
-				return;
-			}
 
 			FinanceObject finObj = new FinanceObject();
 			finObj.name = temp[0];
@@ -115,20 +105,9 @@ namespace finance_app
 				return;
 			}
 
-			temp[3] = temp[3].Trim().ToLower();
-			switch (temp[3])
+			if (checkGain.IsChecked.HasValue)
 			{
-				case "gain":
-					finObj.gain = true; break;
-				case "loss":
-					finObj.gain = false; break;
-				default:
-					// Failure case. Tell the user what they did wrong and clear field.
-					MessageBox.Show("You did not enter a valid gain / loss" +
-						" for the finance object.\nYou should type: " +
-						" \"Gain\", \"Loss\", \"gain\" or \"loss.\"");
-					txtGainLoss.Clear();
-					return;
+				finObj.gain = checkGain.IsChecked.Value;
 			}
 
 			finObj.timeAdded = DateTime.Now;
@@ -139,8 +118,27 @@ namespace finance_app
 			lstNames.Items.Add($"{finObj}");
 			txtName.Clear();
 			txtAmount.Clear();
-			txtGainLoss.Clear();
 			txtDate.SelectedDate = DateTime.Now;
+		}
+
+		private void HandleGainCheck(object sender, RoutedEventArgs e)
+		{
+			checkLoss.IsChecked = false;
+		}
+
+		private void HandleGainUnchecked(object sender, RoutedEventArgs e)
+		{
+			checkLoss.IsChecked = true;
+		}
+
+		private void HandleLossCheck(object sender, RoutedEventArgs e)
+		{
+			checkGain.IsChecked = false;
+		}
+
+		private void HandleLossUnchecked(object sender, RoutedEventArgs e)
+		{
+			checkGain.IsChecked = true;
 		}
 	}
 }

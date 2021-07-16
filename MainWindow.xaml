@@ -60,7 +60,22 @@
                           ItemsSource="{Binding Source={StaticResource financeObjectIntervals}}">
                 </ComboBox>
                 <TextBox Grid.Column="1" Grid.Row="3" x:Name="txtAmount"/>
-				<TextBox Grid.Column="1" Grid.Row="4" x:Name="txtGainLoss"/>
+				<!--TextBox Grid.Column="1" Grid.Row="4" x:Name="txtGainLoss"/-->
+                <Grid Grid.Column="1" Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0">Gain</Label>
+                    <CheckBox Grid.Column="1" x:Name="checkGain"
+                              Checked="HandleGainCheck" Unchecked="HandleGainUnchecked"></CheckBox>
+                    <Label Grid.Column="2">Loss</Label>
+                    <CheckBox Grid.Column="3" x:Name="checkLoss"
+                              Checked="HandleLossCheck" Unchecked="HandleLossUnchecked"></CheckBox>
+                </Grid>
                 <DatePicker SelectedDateFormat="Long" SelectedDate="7/13/2021"
                             DisplayDateStart="1/01/2021" DisplayDateEnd="12/31/2021"
                             FirstDayOfWeek="Sunday"
