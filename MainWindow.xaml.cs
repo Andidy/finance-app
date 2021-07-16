@@ -60,6 +60,8 @@ namespace finance_app
 
 			checkGain.IsChecked = true;
 			checkLoss.IsChecked = false;
+
+			lstNames.ItemsSource = financeObjects;
 		}
 
 		private void ButtonAddObject_Click(object sender, RoutedEventArgs e)
@@ -114,8 +116,10 @@ namespace finance_app
 			finObj.timeOfObject = (DateTime)txtDate.SelectedDate;
 
 			financeObjects.Add(finObj);
-			
-			lstNames.Items.Add($"{finObj}");
+			financeObjects.Sort((x, y) => x.timeOfObject.CompareTo(y.timeOfObject));
+
+			lstNames.Items.Refresh();
+
 			txtName.Clear();
 			txtAmount.Clear();
 			txtDate.SelectedDate = DateTime.Now;
