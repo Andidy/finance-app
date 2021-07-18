@@ -59,6 +59,13 @@ namespace finance_app
 		public string name;
 		public BalanceType type;
 		public float amount;
+
+		public override string ToString()
+		{
+			StringBuilder result = new StringBuilder();
+			result.AppendFormat("{0}, {1:G}, {2:F}", name, type, amount);
+			return result.ToString();
+		}
 	}
 
 	/// <summary>
