@@ -24,7 +24,7 @@ namespace finance_app
 		Quarterly,
 		Yearly
 	}
-	public struct FinanceObject
+	public class FinanceObject
 	{
 		public string name;
 		public Interval interval;
@@ -32,6 +32,7 @@ namespace finance_app
 		public bool gain;
 		public DateTime timeAdded;
 		public DateTime timeOfObject;
+		public FinanceBalance financeBalance;
 
 		public override string ToString()
 		{
@@ -39,8 +40,8 @@ namespace finance_app
 			string gainLoss = gain ? "Gain" : "Loss";
 
 			StringBuilder result = new StringBuilder();
-			result.AppendFormat("{0}: {1:G}, {2:F}, {3}, {4}, {5}",
-				name, interval, amount, gainLoss, timeAdded.ToString(), timeOfObject.ToString());
+			result.AppendFormat("{0}: {1:G}, {2:F}, {3}, {4}, {5}, {6}",
+				name, interval, amount, gainLoss, timeAdded.ToString(), timeOfObject.ToString(), financeBalance.name);
 			return result.ToString();
 		}
 	}
@@ -54,11 +55,12 @@ namespace finance_app
 		Loan,
 		Bond
 	}
-	public struct FinanceBalance
+	public class FinanceBalance
 	{
 		public string name;
 		public BalanceType type;
 		public float amount;
+		public float initialAmount;
 
 		public override string ToString()
 		{
@@ -91,6 +93,8 @@ namespace finance_app
 
 			lstFinObjs.ItemsSource = financeObjects;
 			lstBalances.ItemsSource = financeBalances;
+
+			comboBoxBalanceSelection.ItemsSource = financeBalances;
 		}
 
 		private void ButtonAddObject_Click(object sender, RoutedEventArgs e)
@@ -144,6 +148,8 @@ namespace finance_app
 			finObj.timeAdded = DateTime.Now;
 			finObj.timeOfObject = (DateTime)txtDate.SelectedDate;
 
+			finObj.financeBalance = (FinanceBalance)comboBoxBalanceSelection.SelectedItem;
+
 			financeObjects.Add(finObj);
 			financeObjects.Sort((x, y) => x.timeOfObject.CompareTo(y.timeOfObject));
 
@@ -151,7 +157,7 @@ namespace finance_app
 
 			txtName.Clear();
 			txtAmount.Clear();
-			txtDate.SelectedDate = DateTime.Now;
+			txtDate.SelectedDate = DateTime.Today;
 		}
 
 		private void HandleGainCheck(object sender, RoutedEventArgs e)
@@ -177,12 +183,21 @@ namespace finance_app
 		private void ButtonCalculateBalance_Click(object sender, RoutedEventArgs e)
 		{
 			float value = 0.0f;
+
+			foreach(FinanceBalance fb in financeBalances)
+			{
+				fb.amount = fb.initialAmount;
+			}
+
 			foreach(FinanceObject fo in financeObjects)
 			{
 				if(0 >= fo.timeOfObject.CompareTo(calculationDate.SelectedDate.Value))
 				{
+					FinanceBalance fb = financeBalances.First(item => item.name == fo.financeBalance.name);
+					int index = financeBalances.IndexOf(fb);
+
 					float sign = fo.gain ? 1.0f : -1.0f;
-					value += fo.amount * sign;
+					financeBalances[index].amount += fo.amount * sign;
 				}
 				else
 				{
@@ -190,7 +205,14 @@ namespace finance_app
 				}
 			}
 
-			balanceAmount.Content = "Balance: " + value;
+			lstBalances.Items.Refresh();
+			comboBoxBalanceSelection.Items.Refresh();
+
+			foreach (FinanceBalance fb in financeBalances)
+			{
+				value += fb.amount;
+			}
+			balanceAmount.Content = "Global Balance: " + value;
 		}
 
 		private void ButtonAddBalance_Click(object sender, RoutedEventArgs e)
@@ -223,9 +245,9 @@ namespace finance_app
 			finBal.name = temp[0];
 			finBal.type = (BalanceType)comboBoxBalanceType.SelectedItem;
 
-			if (float.TryParse(temp[1], out finBal.amount))
+			if (float.TryParse(temp[1], out finBal.initialAmount))
 			{
-				// Success. Do Nothing
+				finBal.amount = finBal.initialAmount;
 			}
 			else
 			{
@@ -239,6 +261,7 @@ namespace finance_app
 			financeBalances.Sort((x, y) => x.name.CompareTo(y.name));
 
 			lstBalances.Items.Refresh();
+			comboBoxBalanceSelection.Items.Refresh();
 
 			txtBalanceName.Clear();
 			txtBalanceAmount.Clear();
