@@ -6,7 +6,7 @@
 		xmlns:local="clr-namespace:finance_app"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
 		mc:Ignorable="d"
-		Title="Finance App" Height="300" Width="600">
+		Title="Finance App" Height="400" Width="600">
     <Window.Resources>
 
         <ObjectDataProvider x:Key="financeObjectIntervals"
@@ -76,12 +76,17 @@
                     <CheckBox Grid.Column="3" x:Name="checkLoss"
                               Checked="HandleLossCheck" Unchecked="HandleLossUnchecked"></CheckBox>
                 </Grid>
-                <DatePicker SelectedDateFormat="Long" SelectedDate="7/13/2021"
+                <DatePicker SelectedDateFormat="Long"
                             DisplayDateStart="1/01/2021" DisplayDateEnd="12/31/2021"
                             FirstDayOfWeek="Sunday"
                             Grid.Column="1" Grid.Row="5" x:Name="txtDate"/>
             </Grid>
             <Button x:Name="btnAdd" Margin="0,5,0,0" Click="ButtonAddObject_Click">Add Object</Button>
+            <Label>Calculate Balance Upto Date:</Label>
+            <DatePicker SelectedDateFormat="Long"
+                        DisplayDateStart="1/01/2021" DisplayDateEnd="12/31/2021"
+                        FirstDayOfWeek="Sunday"
+                        x:Name="calculationDate"/>
             <Button x:Name="btnCalculateBalance" Margin="0,5,0,0" Click="ButtonCalculateBalance_Click">Calculate Balance</Button>
         </StackPanel>
     </Grid>

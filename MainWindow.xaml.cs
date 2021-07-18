@@ -56,6 +56,9 @@ namespace finance_app
 		{
 			InitializeComponent();
 
+			txtDate.SelectedDate = DateTime.Today;
+			calculationDate.SelectedDate = DateTime.Today;
+
 			financeObjects = new List<FinanceObject>();
 
 			checkGain.IsChecked = true;
@@ -150,8 +153,15 @@ namespace finance_app
 			float value = 0.0f;
 			foreach(FinanceObject fo in financeObjects)
 			{
-				float sign = fo.gain ? 1.0f : -1.0f;
-				value += fo.amount * sign;
+				if(0 >= fo.timeOfObject.CompareTo(calculationDate.SelectedDate.Value))
+				{
+					float sign = fo.gain ? 1.0f : -1.0f;
+					value += fo.amount * sign;
+				}
+				else
+				{
+					break;
+				}
 			}
 
 			balanceAmount.Content = "Balance: " + value;
