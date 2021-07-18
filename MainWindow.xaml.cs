@@ -45,12 +45,29 @@ namespace finance_app
 		}
 	}
 
+	public enum BalanceType
+	{
+		SavingsAccount,
+		CheckingAccount,
+		Stock,
+		CreditCard,
+		Loan,
+		Bond
+	}
+	public struct FinanceBalance
+	{
+		public string name;
+		public BalanceType type;
+		public float amount;
+	}
+
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	public partial class MainWindow : Window
 	{
 		public List<FinanceObject> financeObjects;
+		public List<FinanceBalance> financeBalances;
 
 		public MainWindow()
 		{
@@ -60,16 +77,18 @@ namespace finance_app
 			calculationDate.SelectedDate = DateTime.Today;
 
 			financeObjects = new List<FinanceObject>();
+			financeBalances = new List<FinanceBalance>();
 
 			checkGain.IsChecked = true;
 			checkLoss.IsChecked = false;
 
-			lstNames.ItemsSource = financeObjects;
+			lstFinObjs.ItemsSource = financeObjects;
+			lstBalances.ItemsSource = financeBalances;
 		}
 
 		private void ButtonAddObject_Click(object sender, RoutedEventArgs e)
 		{
-			string[] temp = new string[4];
+			string[] temp = new string[2];
 			if (!string.IsNullOrWhiteSpace(txtName.Text))
 			{
 				temp[0] = txtName.Text;
@@ -83,7 +102,7 @@ namespace finance_app
 			}
 			if (!string.IsNullOrWhiteSpace(txtAmount.Text))
 			{ 
-				temp[2] = txtAmount.Text;
+				temp[1] = txtAmount.Text;
 			}
 			else
 			{
@@ -98,7 +117,7 @@ namespace finance_app
 
 			finObj.interval = (Interval)comboBoxInterval.SelectedItem;
 
-			if(float.TryParse(temp[2], out finObj.amount))
+			if(float.TryParse(temp[1], out finObj.amount))
 			{
 				// Success. Do Nothing
 			}
@@ -121,7 +140,7 @@ namespace finance_app
 			financeObjects.Add(finObj);
 			financeObjects.Sort((x, y) => x.timeOfObject.CompareTo(y.timeOfObject));
 
-			lstNames.Items.Refresh();
+			lstFinObjs.Items.Refresh();
 
 			txtName.Clear();
 			txtAmount.Clear();
@@ -165,6 +184,57 @@ namespace finance_app
 			}
 
 			balanceAmount.Content = "Balance: " + value;
+		}
+
+		private void ButtonAddBalance_Click(object sender, RoutedEventArgs e)
+		{
+			string[] temp = new string[2];
+			if (!string.IsNullOrWhiteSpace(txtBalanceName.Text))
+			{
+				temp[0] = txtBalanceName.Text;
+			}
+			else
+			{
+				// Failure case. Tell the user what they did wrong and clear amount field.
+				MessageBox.Show("You did not enter a valid name for the balance.");
+				txtBalanceName.Clear();
+				return;
+			}
+			if (!string.IsNullOrWhiteSpace(txtBalanceAmount.Text))
+			{
+				temp[1] = txtBalanceAmount.Text;
+			}
+			else
+			{
+				// Failure case. Tell the user what they did wrong and clear amount field.
+				MessageBox.Show("You did not enter a valid amount for the balance.");
+				txtBalanceAmount.Clear();
+				return;
+			}
+
+			FinanceBalance finBal = new FinanceBalance();
+			finBal.name = temp[0];
+			finBal.type = (BalanceType)comboBoxBalanceType.SelectedItem;
+
+			if (float.TryParse(temp[1], out finBal.amount))
+			{
+				// Success. Do Nothing
+			}
+			else
+			{
+				// Failure case. Tell the user what they did wrong and clear amount field.
+				MessageBox.Show("The amount you entered is not a decimal number within range.");
+				txtBalanceAmount.Clear();
+				return;
+			}
+
+			financeBalances.Add(finBal);
+			financeBalances.Sort((x, y) => x.name.CompareTo(y.name));
+
+			lstBalances.Items.Refresh();
+
+			txtBalanceName.Clear();
+			txtBalanceAmount.Clear();
 		}
 	}
 }

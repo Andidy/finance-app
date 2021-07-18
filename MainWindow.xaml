@@ -6,9 +6,9 @@
 		xmlns:local="clr-namespace:finance_app"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
 		mc:Ignorable="d"
-		Title="Finance App" Height="400" Width="600">
+		Title="Finance App" Height="Auto" Width="600">
+    
     <Window.Resources>
-
         <ObjectDataProvider x:Key="financeObjectIntervals"
                             MethodName="GetValues" 
                             ObjectType="{x:Type System:Enum}">
@@ -17,22 +17,32 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
+        <ObjectDataProvider x:Key="financeBalanceTypes"
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:BalanceType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Window.Resources>
 
     <Grid Margin="10">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-		<Label>Finance Objects</Label>
-        <Label Grid.Column="1" x:Name="balanceAmount">Test</Label>
-		<ListBox Grid.Row="1" x:Name="lstNames"/>
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,0,0,0">
+        <StackPanel Grid.Column="0" Grid.Row="0" >
+            <Label>Finance Objects</Label>
+            <ListBox MinHeight="100" x:Name="lstFinObjs"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,0">
             <Label>Enter New Object</Label>
             <Grid>
                 <Grid.RowDefinitions>
@@ -58,7 +68,8 @@
                 <Label Grid.Column="0" Grid.Row="5">Date:</Label>
                 <TextBox Grid.Column="1" Grid.Row="1" x:Name="txtName"/>
                 <ComboBox Grid.Column="1" Grid.Row="2" x:Name="comboBoxInterval"
-                          ItemsSource="{Binding Source={StaticResource financeObjectIntervals}}">
+                          ItemsSource="{Binding Source={StaticResource financeObjectIntervals}}"
+                          SelectedIndex="0">
                 </ComboBox>
                 <TextBox Grid.Column="1" Grid.Row="3" x:Name="txtAmount"/>
                 <Grid Grid.Column="1" Grid.Row="4">
@@ -81,13 +92,59 @@
                             FirstDayOfWeek="Sunday"
                             Grid.Column="1" Grid.Row="5" x:Name="txtDate"/>
             </Grid>
-            <Button x:Name="btnAdd" Margin="0,5,0,0" Click="ButtonAddObject_Click">Add Object</Button>
-            <Label>Calculate Balance Upto Date:</Label>
+            <Button x:Name="btnAdd" Margin="0,5,0,0" Click="ButtonAddObject_Click">
+                Add Object
+            </Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <Label>Balances</Label>
+            <ListBox MinHeight="100" x:Name="lstBalances"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Label>Add Balance</Label>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0">Field</Label>
+                <Label Grid.Column="1" Grid.Row="0">Input</Label>
+
+                <Label Grid.Column="0" Grid.Row="1">Name:</Label>
+                <Label Grid.Column="0" Grid.Row="2">Interval:</Label>
+                <Label Grid.Column="0" Grid.Row="3">Amount:</Label>
+                <TextBox Grid.Column="1" Grid.Row="1" x:Name="txtBalanceName"/>
+                <ComboBox Grid.Column="1" Grid.Row="2" x:Name="comboBoxBalanceType"
+                          ItemsSource="{Binding Source={StaticResource financeBalanceTypes}}"
+                          SelectedIndex="0">
+                </ComboBox>
+                <TextBox Grid.Column="1" Grid.Row="3" x:Name="txtBalanceAmount"/>
+            </Grid>
+            <Button x:Name="btnAddBalance" Margin="0,5,0,0" Click="ButtonAddBalance_Click">
+                Add Balance
+            </Button>
+        </StackPanel>
+
+        <Label Grid.Column="0" Grid.Row="2" x:Name="balanceAmount">Balance: 0</Label>
+        
+        <StackPanel Grid.Column="1" Grid.Row="2">
+            <Label>Calculate Global Balance Upto Date:</Label>
             <DatePicker SelectedDateFormat="Long"
                         DisplayDateStart="1/01/2021" DisplayDateEnd="12/31/2021"
                         FirstDayOfWeek="Sunday"
                         x:Name="calculationDate"/>
-            <Button x:Name="btnCalculateBalance" Margin="0,5,0,0" Click="ButtonCalculateBalance_Click">Calculate Balance</Button>
+            <Button x:Name="btnCalculateBalance" Margin="0,5,0,0" Click="ButtonCalculateBalance_Click">
+                Calculate Global Balance
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
